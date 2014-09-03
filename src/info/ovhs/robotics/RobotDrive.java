@@ -32,9 +32,11 @@ public class RobotDrive extends SimpleRobot {
     /**
      * This function is called once each time the robot enters autonomous mode.
      */
-    public void autonomous() {     
-//turns off safety
-        Variables.Del_Toro.setSafetyEnabled(false);        
+  public void autonomous() {
+                //turns off safety
+        Variables.Del_Toro.setSafetyEnabled(false);
+        Variables.EncoderCreate();
+        
         //driving
         double inputSpeedX = 0;
         double inputSpeedY = -1;
@@ -46,11 +48,83 @@ public class RobotDrive extends SimpleRobot {
         Variables.Del_Toro.setInvertedMotor(edu.wpi.first.wpilibj.RobotDrive.MotorType.kRearRight, true);
         Variables.Del_Toro.setInvertedMotor(edu.wpi.first.wpilibj.RobotDrive.MotorType.kFrontRight, true);
         Variables.Del_Toro.mecanumDrive_Cartesian(inputSpeedX, inputSpeedY, inputSpeedTheta, 0);
-        Timer.delay(1.5);
+        Timer.delay(2);
         Variables.Del_Toro.mecanumDrive_Cartesian(inputSpeedX2, inputSpeedY2, inputSpeedTheta2, 0);
         Timer.delay(2.5);
         Variables.Del_Toro.mecanumDrive_Cartesian(0, 0, 0, 0);
- 
+       
+        //catapult
+        String warningText;
+        boolean flag1 = false;
+        boolean flag2 = false;
+        boolean completed = false;
+        double angle = 140;
+        double angleback = 15;
+        double resetDelay = 0;
+        double resetDelay2 = 0;
+       
+        //statement 1
+        flag1 = true;
+        completed = false;
+        warningText = "Running Catapult System";
+       while (flag1 || flag2){
+       warningText = "yes";
+           //statement 2
+        if ((EncoderRead.getEncDistance() < angle) && flag1 && !flag2 && !completed){
+            Variables.CatapultMotor1.set(1);
+            Variables.CatapultMotor2.set(-1);
+            
+        }
+        //statement 3
+        else if (flag1 && (EncoderRead.getEncDistance() > angle) && !flag2 && !completed){
+            flag2 = true;
+            Variables.CatapultMotor1.set(0.00);
+            Variables.CatapultMotor2.set(0.00);
+            resetDelay = System.currentTimeMillis();
+            flag1 = false;
+        }
+       
+        //statement 4
+        else if (flag2 && resetDelay2 < (resetDelay + 250) && !completed ) {
+            resetDelay2 = System.currentTimeMillis();
+        }
+        
+        //statement 5
+        else if ((resetDelay2 >= (resetDelay + 250)) && (EncoderRead.getEncDistance() > angleback && !completed )) {
+            Variables.CatapultMotor1.set(-.25);
+            Variables.CatapultMotor2.set(.25);
+        }
+        //statement 6
+        else {
+            Variables.CatapultMotor1.set(0.00);
+            Variables.CatapultMotor2.set(0.00);
+            flag2 = false;
+            flag1 = false;
+            completed = true;
+            warningText = "Catapult system completed";
+        }
+        
+        //Driving SmartDashboard Outputs    
+SmartDashboard.putNumber("Input Speed X", inputSpeedX);
+SmartDashboard.putNumber("Input Speed Y", inputSpeedY);
+SmartDashboard.putNumber("Input Speed Theta", inputSpeedTheta);
+//Motor Value outputs for grabber
+SmartDashboard.putNumber("Motor 1", Variables.Motor1.getSpeed());
+SmartDashboard.putNumber("Motor 2", Variables.Motor2.getSpeed());
+//Catapult motor value outputs
+SmartDashboard.putNumber("Catapult Motor 1", Variables.CatapultMotor1.getSpeed());
+SmartDashboard.putNumber("Catapult Motor 2", Variables.CatapultMotor2.getSpeed());  
+//Catapult SmartDashboard Outputs
+
+SmartDashboard.putBoolean("Flag1", flag1);
+SmartDashboard.putBoolean("Flag2", flag2);
+SmartDashboard.putNumber("ResetDelay1", resetDelay);
+SmartDashboard.putNumber("ResetDelay2", resetDelay2);
+SmartDashboard.putNumber("Current Time", System.currentTimeMillis());        
+SmartDashboard.putNumber("EncoderReader Distance", EncoderReader.encoder1.getDistance());
+SmartDashboard.putString("", warningText);
+SmartDashboard.putBoolean("Completed", completed);
+       } 
     }
     /**
      * This function is called once each time the robot enters operator control.
