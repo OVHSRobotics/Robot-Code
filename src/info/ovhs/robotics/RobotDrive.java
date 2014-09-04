@@ -47,19 +47,29 @@ public class RobotDrive extends SimpleRobot {
         // Invert the two front motors because of the mirroring of the gearboxes
         Variables.Del_Toro.setInvertedMotor(edu.wpi.first.wpilibj.RobotDrive.MotorType.kRearRight, true);
         Variables.Del_Toro.setInvertedMotor(edu.wpi.first.wpilibj.RobotDrive.MotorType.kFrontRight, true);
+        // Sets the robot moving full speed for 2 seconds
         Variables.Del_Toro.mecanumDrive_Cartesian(inputSpeedX, inputSpeedY, inputSpeedTheta, 0);
         Timer.delay(2);
+        // Sets the robot moving at 1/4 speed for 2.5 seconds.
         Variables.Del_Toro.mecanumDrive_Cartesian(inputSpeedX2, inputSpeedY2, inputSpeedTheta2, 0);
         Timer.delay(2.5);
+        // Stops the robot
         Variables.Del_Toro.mecanumDrive_Cartesian(0, 0, 0, 0);
        
         //catapult
+        // Warning Text for Debugging
         String warningText;
+        
+        // Flags for Catapult Launch
         boolean flag1 = false;
         boolean flag2 = false;
+        // Debugging tool to tell if catapult launch completed
         boolean completed = false;
+        // Sets forward angle to 140
         double angle = 140;
+        // Sets backwards angle to 15
         double angleback = 15;
+        // Sets the resetdelay 1 and 2
         double resetDelay = 0;
         double resetDelay2 = 0;
        
@@ -147,7 +157,7 @@ SmartDashboard.putBoolean("Completed", completed);
          
          //creates variable to control power of catapult motors
          double catapultPower = 0;
-        while (isOperatorControl() && isEnabled()) {
+        while (isOperatorControl() && isEnabled()) { 
         //driving
             inputSpeedX = Variables.Joystick.getRawAxis(1);
             inputSpeedY = Variables.Joystick.getRawAxis(2);
