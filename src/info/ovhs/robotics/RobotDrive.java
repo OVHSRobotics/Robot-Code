@@ -115,11 +115,6 @@ public class RobotDrive extends SimpleRobot {
             warningText = "Catapult system completed";
         }
         
-        while (isAutonomous() && isEnabled()) {
-            System.out.println("Warning Text: " + warningText);
-            System.out.println("Current Time: " + System.currentTimeMillis());
-            
-        }
                 
 //Driving SmartDashboard Outputs    
 SmartDashboard.putNumber("Input Speed X", inputSpeedX);
