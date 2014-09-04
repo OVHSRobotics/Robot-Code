@@ -33,6 +33,7 @@ public class RobotDrive extends SimpleRobot {
      * This function is called once each time the robot enters autonomous mode.
      */
   public void autonomous() {
+
                 //turns off safety
         Variables.Del_Toro.setSafetyEnabled(false);
         Variables.EncoderCreate();
@@ -56,7 +57,7 @@ public class RobotDrive extends SimpleRobot {
         // Stops the robot
         Variables.Del_Toro.mecanumDrive_Cartesian(0, 0, 0, 0);
        
-        //catapult
+        //catapult  {{{{{{
         // Warning Text for Debugging
         String warningText;
         
@@ -69,7 +70,7 @@ public class RobotDrive extends SimpleRobot {
         double angle = 140;
         // Sets backwards angle to 15
         double angleback = 15;
-        // Sets the resetdelay 1 and 2
+        // Sets the resetdelay 1 and 2 for the catapult
         double resetDelay = 0;
         double resetDelay2 = 0;
        
@@ -114,7 +115,13 @@ public class RobotDrive extends SimpleRobot {
             warningText = "Catapult system completed";
         }
         
-        //Driving SmartDashboard Outputs    
+        while (isAutonomous() && isEnabled()) {
+            System.out.println("Warning Text: " + warningText);
+            System.out.println("Current Time: " + System.currentTimeMillis());
+            
+        }
+                
+//Driving SmartDashboard Outputs    
 SmartDashboard.putNumber("Input Speed X", inputSpeedX);
 SmartDashboard.putNumber("Input Speed Y", inputSpeedY);
 SmartDashboard.putNumber("Input Speed Theta", inputSpeedTheta);
@@ -125,14 +132,13 @@ SmartDashboard.putNumber("Motor 2", Variables.Motor2.getSpeed());
 SmartDashboard.putNumber("Catapult Motor 1", Variables.CatapultMotor1.getSpeed());
 SmartDashboard.putNumber("Catapult Motor 2", Variables.CatapultMotor2.getSpeed());  
 //Catapult SmartDashboard Outputs
-
 SmartDashboard.putBoolean("Flag1", flag1);
 SmartDashboard.putBoolean("Flag2", flag2);
 SmartDashboard.putNumber("ResetDelay1", resetDelay);
 SmartDashboard.putNumber("ResetDelay2", resetDelay2);
 SmartDashboard.putNumber("Current Time", System.currentTimeMillis());        
 SmartDashboard.putNumber("EncoderReader Distance", EncoderReader.encoder1.getDistance());
-SmartDashboard.putString("", warningText);
+SmartDashboard.putString("Warning Text for Debugging", warningText);
 SmartDashboard.putBoolean("Completed", completed);
        } 
     }
