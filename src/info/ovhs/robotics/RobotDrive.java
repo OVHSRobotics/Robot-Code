@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.lang.Math;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 //import edu.wpi.first.wpilibj.RobotDrive;
 
@@ -27,7 +28,9 @@ import java.lang.Math;
  */
 public class RobotDrive extends SimpleRobot {
     
-        EncoderReader EncoderRead = new EncoderReader();    
+        EncoderReader EncoderRead = new EncoderReader();   
+        NetworkTable table = NetworkTable.getTable("datatable");
+        
 //    
     /**
      * This function is called once each time the robot enters autonomous mode.
@@ -307,25 +310,28 @@ if (Variables.Joystick.getRawButton(7)) {
             Variables.Motor1.set(0);
             Variables.Motor2.set(0);
         }
-
         
-//Driving SmartDashboard Outputs    
-SmartDashboard.putNumber("Input Speed X", inputSpeedX);
-SmartDashboard.putNumber("Input Speed Y", inputSpeedY);
-SmartDashboard.putNumber("Input Speed Theta", inputSpeedTheta);
-//Motor Value outputs for grabber
-SmartDashboard.putNumber("Motor 1", Variables.Motor1.getSpeed());
-SmartDashboard.putNumber("Motor 2", Variables.Motor2.getSpeed());
-//Catapult motor value outputs
-SmartDashboard.putNumber("Catapult Motor 1", Variables.CatapultMotor1.getSpeed());
-SmartDashboard.putNumber("Catapult Motor 2", Variables.CatapultMotor2.getSpeed());  
-//Catapult SmartDashboard Outputs
-SmartDashboard.putBoolean("Flag1", flag1);
-SmartDashboard.putBoolean("Flag2", flag2);
-SmartDashboard.putNumber("ResetDelay1", resetDelay);
-SmartDashboard.putNumber("ResetDelay2", resetDelay2);
-SmartDashboard.putNumber("Current Time", System.currentTimeMillis());        
-SmartDashboard.putNumber("EncoderReader Distance", EncoderReader.encoder1.getDistance());
+        String readout = null;
+        table.putString("Readout", readout);
+        System.out.println(readout);
+        
+        /*//Driving SmartDashboard Outputs
+        SmartDashboard.putNumber("Input Speed X", inputSpeedX);
+        SmartDashboard.putNumber("Input Speed Y", inputSpeedY);
+        SmartDashboard.putNumber("Input Speed Theta", inputSpeedTheta);
+        //Motor Value outputs for grabber
+        SmartDashboard.putNumber("Motor 1", Variables.Motor1.getSpeed());
+        SmartDashboard.putNumber("Motor 2", Variables.Motor2.getSpeed());
+        //Catapult motor value outputs
+        SmartDashboard.putNumber("Catapult Motor 1", Variables.CatapultMotor1.getSpeed());
+        SmartDashboard.putNumber("Catapult Motor 2", Variables.CatapultMotor2.getSpeed());
+        //Catapult SmartDashboard Outputs
+        SmartDashboard.putBoolean("Flag1", flag1);
+        SmartDashboard.putBoolean("Flag2", flag2);
+        SmartDashboard.putNumber("ResetDelay1", resetDelay);
+        SmartDashboard.putNumber("ResetDelay2", resetDelay2);
+        SmartDashboard.putNumber("Current Time", System.currentTimeMillis());
+        SmartDashboard.putNumber("EncoderReader Distance", EncoderReader.encoder1.getDistance());*/
         } 
     }
     
