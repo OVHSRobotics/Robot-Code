@@ -329,10 +329,13 @@ SmartDashboard.putNumber("EncoderReader Distance", EncoderReader.encoder1.getDis
 
 
 
-SmartDashboard.getNumber("Input Speed X", inputSpeedX);
+/*SmartDashboard.getNumber("Input Speed X", inputSpeedX);
 SmartDashboard.getNumber("Input Speed Y", inputSpeedY);
 SmartDashboard.getNumber("Input Speed Theta", inputSpeedTheta);
-SmartDashboard.getBoolean("Flag1", flag1);
+SmartDashboard.getBoolean("Flag1", flag1);*/
+String testString = "The Variable was not changed";
+SmartDashboard.getString("Test String", testString);
+System.out.println(testString);
         } 
     }
     
