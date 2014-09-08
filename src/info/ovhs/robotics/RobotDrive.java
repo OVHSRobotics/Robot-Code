@@ -326,6 +326,13 @@ SmartDashboard.putNumber("ResetDelay1", resetDelay);
 SmartDashboard.putNumber("ResetDelay2", resetDelay2);
 SmartDashboard.putNumber("Current Time", System.currentTimeMillis());        
 SmartDashboard.putNumber("EncoderReader Distance", EncoderReader.encoder1.getDistance());
+
+
+
+SmartDashboard.getNumber("Input Speed X", inputSpeedX);
+SmartDashboard.getNumber("Input Speed Y", inputSpeedY);
+SmartDashboard.getNumber("Input Speed Theta", inputSpeedTheta);
+SmartDashboard.getBoolean("Flag1", flag1);
         } 
     }
     
