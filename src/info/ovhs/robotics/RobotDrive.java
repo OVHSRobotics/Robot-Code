@@ -241,6 +241,15 @@ SmartDashboard.putNumber("ResetDelay1", resetDelay);
 SmartDashboard.putNumber("ResetDelay2", resetDelay2);
 SmartDashboard.putNumber("Current Time", System.currentTimeMillis());        
 SmartDashboard.putNumber("EncoderReader Distance", EncoderReader.encoder1.getDistance());
+SmartDashboard.getBoolean("Enable Motor 1", motor1Enable);
+if (motor1Enable)
+{
+    Variables.CatapultMotor1.setSpeed(SmartDashboard.getNumber(motor1Speed));
+}
+else
+{
+    Variables.CatapultMotor1.setSpeed(Variables.Joystick.getRawAxi(1));
+}
         } 
     }
     
