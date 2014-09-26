@@ -45,6 +45,20 @@ public class RobotDrive extends SimpleRobot {
         double inputSpeedX2 = 0;
         double inputSpeedY2 = -.25;
         double inputSpeedTheta2 = 0;
+        
+        // Flags for Catapult Launch
+        boolean flag1 = false;
+        boolean flag2 = false;
+        // Debugging tool to tell if catapult launch completed
+        boolean completed = false;
+        // Sets forward angle to 140
+        double angle = 140;
+        // Sets backwards angle to 15
+        double angleback = 15;
+        // Sets the resetdelay 1 and 2 for the catapult
+        double resetDelay = 0;
+        double resetDelay2 = 0;
+        
         // Invert the two front motors because of the mirroring of the gearboxes
         Variables.Del_Toro.setInvertedMotor(edu.wpi.first.wpilibj.RobotDrive.MotorType.kRearRight, true);
         Variables.Del_Toro.setInvertedMotor(edu.wpi.first.wpilibj.RobotDrive.MotorType.kFrontRight, true);
@@ -60,20 +74,7 @@ public class RobotDrive extends SimpleRobot {
         //catapult  {{{{{{
         // Warning Text for Debugging
         String warningText;
-        
-        // Flags for Catapult Launch
-        boolean flag1 = false;
-        boolean flag2 = false;
-        // Debugging tool to tell if catapult launch completed
-        boolean completed = false;
-        // Sets forward angle to 140
-        double angle = 140;
-        // Sets backwards angle to 15
-        double angleback = 15;
-        // Sets the resetdelay 1 and 2 for the catapult
-        double resetDelay = 0;
-        double resetDelay2 = 0;
-       
+               
         //statement 1
         flag1 = true;
         completed = false;
