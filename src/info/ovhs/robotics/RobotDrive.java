@@ -70,15 +70,17 @@ public class RobotDrive extends SimpleRobot {
         Timer.delay(2.5);
         // Stops the robot
         Variables.Del_Toro.mecanumDrive_Cartesian(0, 0, 0, 0);
-       
-        //catapult  {{{{{{
-        // Warning Text for Debugging
-        String warningText;
-               
+        
         //statement 1
         flag1 = true;
         completed = false;
         warningText = "Running Catapult System";
+       
+        //catapult  
+        // Warning Text for Debugging
+        String warningText;
+               
+
        while (flag1 || flag2){
        warningText = "yes";
            //statement 2
