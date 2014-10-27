@@ -56,7 +56,7 @@ public class Variables {
     public double GetRawEncoder()
     {
         double getRaw = encoder1.getDistance();
-return getRaw;
+        return getRaw;
     }
     boolean direction = false;
     
