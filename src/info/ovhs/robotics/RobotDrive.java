@@ -79,9 +79,6 @@ public class RobotDrive extends SimpleRobot {
         completed = false;
         warningText = "Running Catapult System";
        
-
-               
-
        while (flag1 || flag2){
        warningText = "yes";
            //statement 2
@@ -125,11 +122,11 @@ SmartDashboard.putNumber("Input Speed X", inputSpeedX);
 SmartDashboard.putNumber("Input Speed Y", inputSpeedY);
 SmartDashboard.putNumber("Input Speed Theta", inputSpeedTheta);
 //Motor Value outputs for grabber
-SmartDashboard.putNumber("Motor 1", Variables.Motor1.getSpeed());
-SmartDashboard.putNumber("Motor 2", Variables.Motor2.getSpeed());
+SmartDashboard.putNumber("Motor 1", Variables.Motor1.get());
+SmartDashboard.putNumber("Motor 2", Variables.Motor2.get());
 //Catapult motor value outputs
-SmartDashboard.putNumber("Catapult Motor 1", Variables.CatapultMotor1.getSpeed());
-SmartDashboard.putNumber("Catapult Motor 2", Variables.CatapultMotor2.getSpeed());  
+SmartDashboard.putNumber("Catapult Motor 1", Variables.CatapultMotor1.get());
+SmartDashboard.putNumber("Catapult Motor 2", Variables.CatapultMotor2.get());  
 //Catapult SmartDashboard Outputs
 SmartDashboard.putBoolean("Flag1", flag1);
 SmartDashboard.putBoolean("Flag2", flag2);
@@ -151,6 +148,8 @@ SmartDashboard.putBoolean("Completed", completed);
         double inputSpeedY;
         double inputSpeedTheta;
         double lastPressBackButton = 0;
+        
+        double motor1Speed;
         
         Variables.EncoderCreate();
  //encoder & catapult       
@@ -280,7 +279,7 @@ SmartDashboard.putBoolean("Completed", completed);
             flag1 = false;
         }
         
-//          
+        
 Reverse MotorReverse = new Reverse();
 if (Variables.Joystick.getRawButton(7)) {
     MotorReverse.ReverseMotors();
@@ -318,11 +317,11 @@ SmartDashboard.putNumber("Input Speed X", inputSpeedX);
 SmartDashboard.putNumber("Input Speed Y", inputSpeedY);
 SmartDashboard.putNumber("Input Speed Theta", inputSpeedTheta);
 //Motor Value outputs for grabber
-SmartDashboard.putNumber("Motor 1", Variables.Motor1.getSpeed());
-SmartDashboard.putNumber("Motor 2", Variables.Motor2.getSpeed());
+SmartDashboard.putNumber("Motor 1", Variables.Motor1.get());
+SmartDashboard.putNumber("Motor 2", Variables.Motor2.get());
 //Catapult motor value outputs
-SmartDashboard.putNumber("Catapult Motor 1", Variables.CatapultMotor1.getSpeed());
-SmartDashboard.putNumber("Catapult Motor 2", Variables.CatapultMotor2.getSpeed());  
+SmartDashboard.putNumber("Catapult Motor 1", Variables.CatapultMotor1.get());
+SmartDashboard.putNumber("Catapult Motor 2", Variables.CatapultMotor2.get());  
 //Catapult SmartDashboard Outputs
 SmartDashboard.putBoolean("Flag1", flag1);
 SmartDashboard.putBoolean("Flag2", flag2);
@@ -330,15 +329,14 @@ SmartDashboard.putNumber("ResetDelay1", resetDelay);
 SmartDashboard.putNumber("ResetDelay2", resetDelay2);
 SmartDashboard.putNumber("Current Time", System.currentTimeMillis());        
 SmartDashboard.putNumber("EncoderReader Distance", EncoderReader.encoder1.getDistance());
-SmartDashboard.getBoolean("Enable Motor 1", motor1Enable);
-if (motor1Enable)
-{
-    Variables.CatapultMotor1.setSpeed(SmartDashboard.getNumber(motor1Speed));
-}
-else
-{
-    Variables.CatapultMotor1.setSpeed(Variables.Joystick.getRawAxi(1));
-}
+//if (motor1Enable)
+//{
+//    Variables.CatapultMotor1.set(motor1Speed);
+//}
+//else
+//{
+//    Variables.CatapultMotor1.set(Variables.Joystick.getRawAxis(1));
+//}
         } 
     }
     

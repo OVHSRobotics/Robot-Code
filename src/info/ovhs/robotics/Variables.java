@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -27,10 +28,10 @@ public class Variables {
     static Joystick Joystick = new Joystick(1);
     static Joystick JoystickLeft = Variables.Joystick;
     static double InitialTime = Timer.getFPGATimestamp();
-    static Victor Motor1 = new Victor(7);
-    static Victor Motor2 = new Victor(8);
-    static Talon CatapultMotor2 = new Talon(9);
-    static Talon CatapultMotor1 = new Talon(10);
+    static SpeedController Motor1 = new Victor(7);
+    static SpeedController Motor2 = new Victor(8);
+    static SpeedController CatapultMotor2 = new Talon(9);
+    static SpeedController CatapultMotor1 = new Talon(10);
     
     static boolean SquaredSpeedControl = true;    
 //    static boolean GyroControl = false;
