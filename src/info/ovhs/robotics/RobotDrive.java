@@ -224,29 +224,9 @@ SmartDashboard.putBoolean("Completed", completed);
         
         //catapult
         // x-box button 'A'
-        // 100% power
-        //statement 1
         if (Variables.Joystick.getRawButton(1)){
             flag1 = true;
-            catapultPower = 1;
-        }          
-        
-        // x-box button 'X'
-        // 80% power
-        if (Variables.Joystick.getRawButton(3)){
-            flag1 = true;
-            catapultPower = 0.8;
-        }
-        
-        // x-box button 'Y'
-        // 70% power
-        if (Variables.Joystick.getRawButton(4)){
-            flag1 = true;
-            catapultPower = 0.7;
-        }
-        if (Variables.Joystick.getRawButton(2)) {
-            flag1 = true;
-            catapultPower = .5;
+            catapultPower = Constants.catapultPower;
         }
         
         //statement 2
