@@ -6,4 +6,4 @@ This is the last working code for the robot for team 4619 at Ocean View High Sch
 Open in Netbeans for this code to work.
 
 
-THIS IS FINAL AS OF 4-13-15 at 9 PM
+Branch for training new recruits on use of constants, control flow statements, and FRC SDK.
