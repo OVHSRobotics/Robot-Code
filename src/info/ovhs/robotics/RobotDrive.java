@@ -154,15 +154,14 @@ SmartDashboard.putBoolean("Completed", completed);
         double motor1Speed;
         
         Variables.EncoderCreate();
- //encoder & catapult       
-        long resetDelay = 0;
-        long resetDelay2 = 0;
+        //encoder and catapult
+        long resetCatapultStartTime = 0;
+        long currentResetCatapultTime = 0;
+        int stage = 0;
         EncoderRead.Start();
-         boolean flag1 = false;  //Catapult Motor Flag
-         boolean flag2 = false;
          
-         //creates variable to control power of catapult motors
-         double catapultPower = 0;
+        //creates variable to control power of catapult motors
+        double catapultPower = 0;
         while (isOperatorControl() && isEnabled()) { 
         //driving
             inputSpeedX = Variables.Joystick.getRawAxis(1);
@@ -204,11 +203,11 @@ SmartDashboard.putBoolean("Completed", completed);
                 inputSpeedY = inputSpeedY * Math.abs(inputSpeedY);
                 inputSpeedTheta = inputSpeedTheta * Math.abs(inputSpeedTheta);
             } 
-        // Invert the two front motors because of the mirroring of the gearboxes
-        Variables.Del_Toro.setInvertedMotor(edu.wpi.first.wpilibj.RobotDrive.MotorType.kRearRight, true);
-        Variables.Del_Toro.setInvertedMotor(edu.wpi.first.wpilibj.RobotDrive.MotorType.kFrontRight, true);
-        // Set motors on robot to desired values
-        Variables.Del_Toro.mecanumDrive_Cartesian(inputSpeedX, inputSpeedY, inputSpeedTheta, 0);
+            // Invert the two front motors because of the mirroring of the gearboxes
+            Variables.Del_Toro.setInvertedMotor(edu.wpi.first.wpilibj.RobotDrive.MotorType.kRearRight, true);
+            Variables.Del_Toro.setInvertedMotor(edu.wpi.first.wpilibj.RobotDrive.MotorType.kFrontRight, true);
+            // Set motors on robot to desired values
+            Variables.Del_Toro.mecanumDrive_Cartesian(inputSpeedX, inputSpeedY, inputSpeedTheta, 0);
 //        }
         // Putting the numberson the Smart Dashboard for use to tell what the inputs are and for personal help
 
@@ -222,104 +221,107 @@ SmartDashboard.putBoolean("Completed", completed);
 
         
         
-        //catapult
-        // x-box button 'A'
-        if (Variables.Joystick.getRawButton(1)){
-            flag1 = true;
-            catapultPower = Constants.catapultPower;
-        }
+            /*
+             * Catapult section
+             */
+
+            // x-box button 'A'
+            if (Variables.Joystick.getRawButton(1)){
+                catapultPower = Constants.catapultPower;
+                stage = 1;
+            }
+
+            // stage 1
+            if (stage == 1 && (EncoderRead.getEncDistance() < angle)){
+                Variables.CatapultMotor1.set(catapultPower);
+                Variables.CatapultMotor2.set(-catapultPower);
+                stage = 2;
+            }
+            // stage 2
+            else if (stage == 2 && (EncoderRead.getEncDistance() > angle)) {
+                Variables.CatapultMotor1.set(0.00);
+                Variables.CatapultMotor2.set(0.00);
+                resetCatapultStartTime = System.currentTimeMillis();
+                stage = 3;
+            }
+
+            // stage 3a
+            else if (stage == 3 && currentResetCatapultTime < (resetCatapultStartTime + 250) ) {
+                currentResetCatapultTime = System.currentTimeMillis();
+            }
+            // stage 3b
+            else if (stage == 3 && (currentResetCatapultTime >= (resetCatapultStartTime + 250)) && (EncoderRead.getEncDistance() > angleback )) {
+                Variables.CatapultMotor1.set(-.25);
+                Variables.CatapultMotor2.set(.25);
+            }
+            // stage 3c
+            else {
+                Variables.CatapultMotor1.set(0.00);
+                Variables.CatapultMotor2.set(0.00);
+                stage = 0;
+            }
+            
         
-        //statement 2
-        if ((EncoderRead.getEncDistance() < angle) && flag1 && !flag2){
-            Variables.CatapultMotor1.set(catapultPower);
-            Variables.CatapultMotor2.set(-catapultPower);
-        }
-        //statement 3
-        else if (flag1 && (EncoderRead.getEncDistance() > angle) && !flag2){
-            flag2 = true;
-            Variables.CatapultMotor1.set(0.00);
-            Variables.CatapultMotor2.set(0.00);
-            resetDelay = System.currentTimeMillis();
-            flag1 = false;
-        }
-       
-        //statement 4
-        else if (flag2 && resetDelay2 < (resetDelay + 250) ) {
-            resetDelay2 = System.currentTimeMillis();
-        }
-        
-        //statement 5
-        else if ((resetDelay2 >= (resetDelay + 250)) && (EncoderRead.getEncDistance() > angleback )) {
-            Variables.CatapultMotor1.set(-.25);
-            Variables.CatapultMotor2.set(.25);
-        }
-        //statement 6
-        else {
-            Variables.CatapultMotor1.set(0.00);
-            Variables.CatapultMotor2.set(0.00);
-            flag2 = false;
-            flag1 = false;
-        }
         
         
-Reverse MotorReverse = new Reverse();
-if (Variables.Joystick.getRawButton(7)) {
-    MotorReverse.ReverseMotors();
-    EncoderReader.encoder1.reset();
-}
+        
+            Reverse MotorReverse = new Reverse();
+            if (Variables.Joystick.getRawButton(7)) {
+                MotorReverse.ReverseMotors();
+                EncoderReader.encoder1.reset();
+            }
 
 
-//grabber
-// Loader and unloader code
-// getRawButton(5) refers to left bumper, (6) refers to right bumper
-        if (Variables.Joystick.getRawButton(5) && !Variables.Joystick.getRawButton(6)) {
-            // Pick up ball
-            Variables.Motor1.set(GrabberSpeed);
-            Variables.Motor2.set(-GrabberSpeed);
-        }
-        else if (Variables.Joystick.getRawButton(6) && !Variables.Joystick.getRawButton(5)) {
-            // Release ball
-            Variables.Motor1.set(GrabberSpeed2);
-            Variables.Motor2.set(-GrabberSpeed2);
-        }
-        else if (Variables.Joystick.getRawButton(5) && Variables.Joystick.getRawButton(6)) {
-            // sets speed to predetermined constant
-            // 42% speed was the minimm speed in testing
-            Variables.Motor1.set(.42);
-            Variables.Motor2.set(-.42);
-        }
-        else {
-            Variables.Motor1.set(0);
-            Variables.Motor2.set(0);
-        }
+    //grabber
+    // Loader and unloader code
+    // getRawButton(5) refers to left bumper, (6) refers to right bumper
+            if (Variables.Joystick.getRawButton(5) && !Variables.Joystick.getRawButton(6)) {
+                // Pick up ball
+                Variables.Motor1.set(GrabberSpeed);
+                Variables.Motor2.set(-GrabberSpeed);
+            }
+            else if (Variables.Joystick.getRawButton(6) && !Variables.Joystick.getRawButton(5)) {
+                // Release ball
+                Variables.Motor1.set(GrabberSpeed2);
+                Variables.Motor2.set(-GrabberSpeed2);
+            }
+            else if (Variables.Joystick.getRawButton(5) && Variables.Joystick.getRawButton(6)) {
+                // sets speed to predetermined constant
+                // 42% speed was the minimm speed in testing
+                Variables.Motor1.set(.42);
+                Variables.Motor2.set(-.42);
+            }
+            else {
+                Variables.Motor1.set(0);
+                Variables.Motor2.set(0);
+            }
 
         
-//Driving SmartDashboard Outputs    
-SmartDashboard.putNumber("Input Speed X", inputSpeedX);
-SmartDashboard.putNumber("Input Speed Y", inputSpeedY);
-SmartDashboard.putNumber("Input Speed Theta", inputSpeedTheta);
-//Motor Value outputs for grabber
-SmartDashboard.putNumber("Motor 1", Variables.Motor1.get());
-SmartDashboard.putNumber("Motor 2", Variables.Motor2.get());
-//Catapult motor value outputs
-SmartDashboard.putNumber("Catapult Motor 1", Variables.CatapultMotor1.get());
-SmartDashboard.putNumber("Catapult Motor 2", Variables.CatapultMotor2.get());  
-//Catapult SmartDashboard Outputs
-SmartDashboard.putBoolean("Flag1", flag1);
-SmartDashboard.putBoolean("Flag2", flag2);
-SmartDashboard.putNumber("ResetDelay1", resetDelay);
-SmartDashboard.putNumber("ResetDelay2", resetDelay2);
-SmartDashboard.putNumber("Current Time", System.currentTimeMillis());        
-SmartDashboard.putNumber("EncoderReader Distance", EncoderReader.encoder1.getDistance());
-//if (motor1Enable)
-//{
-//    Variables.CatapultMotor1.set(motor1Speed);
-//}
-//else
-//{
-//    Variables.CatapultMotor1.set(Variables.Joystick.getRawAxis(1));
-//}
-        } 
+            //Driving SmartDashboard Outputs    
+            SmartDashboard.putNumber("Input Speed X", inputSpeedX);
+            SmartDashboard.putNumber("Input Speed Y", inputSpeedY);
+            SmartDashboard.putNumber("Input Speed Theta", inputSpeedTheta);
+            //Motor Value outputs for grabber
+            SmartDashboard.putNumber("Motor 1", Variables.Motor1.get());
+            SmartDashboard.putNumber("Motor 2", Variables.Motor2.get());
+            //Catapult motor value outputs
+            SmartDashboard.putNumber("Catapult Motor 1", Variables.CatapultMotor1.get());
+            SmartDashboard.putNumber("Catapult Motor 2", Variables.CatapultMotor2.get());  
+            //Catapult SmartDashboard Outputs
+            SmartDashboard.putNumber("CatapultStage", stage);
+            SmartDashboard.putNumber("ResetDelay1", resetCatapultStartTime);
+            SmartDashboard.putNumber("ResetDelay2", currentResetCatapultTime);
+            SmartDashboard.putNumber("Current Time", System.currentTimeMillis());        
+            SmartDashboard.putNumber("EncoderReader Distance", EncoderReader.encoder1.getDistance());
+            //if (motor1Enable)
+            //{
+            //    Variables.CatapultMotor1.set(motor1Speed);
+            //}
+            //else
+            //{
+            //    Variables.CatapultMotor1.set(Variables.Joystick.getRawAxis(1));
+            //}
+        }
     }
     
     
