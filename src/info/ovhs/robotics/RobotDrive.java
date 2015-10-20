@@ -40,6 +40,9 @@ public class RobotDrive extends SimpleRobot {
         Variables.Del_Toro.setSafetyEnabled(false);
         Variables.EncoderCreate();
         
+        final double catapultUpSpeed = 1;
+        final double catapultDownSpeed = .25;
+        
         //driving
         double inputSpeedX = 0;
         double inputSpeedY = -1;
@@ -85,8 +88,8 @@ public class RobotDrive extends SimpleRobot {
        warningText = "yes";
            //statement 2
         if ((EncoderRead.getEncDistance() < angle) && flag1 && !flag2 && !completed){
-            Variables.CatapultMotor1.set(1);
-            Variables.CatapultMotor2.set(-1);
+            Variables.CatapultMotor1.set(catapultUpSpeed);
+            Variables.CatapultMotor2.set(-catapultUpSpeed);
             
         }
         //statement 3
@@ -105,8 +108,8 @@ public class RobotDrive extends SimpleRobot {
         
         //statement 5
         else if ((resetDelay2 >= (resetDelay + 250)) && (EncoderRead.getEncDistance() > angleback && !completed )) {
-            Variables.CatapultMotor1.set(-.25);
-            Variables.CatapultMotor2.set(.25);
+            Variables.CatapultMotor1.set(-catapultDownSpeed);
+            Variables.CatapultMotor2.set(catapultDownSpeed);
         }
         //statement 6
         else {
@@ -167,7 +170,7 @@ SmartDashboard.putBoolean("Completed", completed);
         //driving
             inputSpeedX = Variables.Joystick.getRawAxis(1);
             inputSpeedY = Variables.Joystick.getRawAxis(2);
-            inputSpeedTheta = Variables.Joystick.getRawAxis(4);
+            inputSpeedTheta = Variables.Joystick.getRawAxis(5);
             
             // toggles deadzone
             boolean isDead = false;
