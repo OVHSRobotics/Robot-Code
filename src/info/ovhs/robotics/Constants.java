@@ -10,5 +10,5 @@ package info.ovhs.robotics;
  * @author David
  */
 public class Constants {
-    public static double catapultPower = 0.5;
+    public static double catapultPower = 0.60;  // 0-1.0
 }

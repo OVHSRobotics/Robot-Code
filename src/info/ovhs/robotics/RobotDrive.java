@@ -231,30 +231,29 @@ SmartDashboard.putBoolean("Completed", completed);
                 stage = 1;
             }
 
-            // stage 1
+            // stage 1a
             if (stage == 1 && (EncoderRead.getEncDistance() < angle)){
                 Variables.CatapultMotor1.set(catapultPower);
                 Variables.CatapultMotor2.set(-catapultPower);
-                stage = 2;
             }
-            // stage 2
-            else if (stage == 2 && (EncoderRead.getEncDistance() > angle)) {
+            // stage 1b
+            else if (stage == 1 && (EncoderRead.getEncDistance() > angle)) {
                 Variables.CatapultMotor1.set(0.00);
                 Variables.CatapultMotor2.set(0.00);
                 resetCatapultStartTime = System.currentTimeMillis();
-                stage = 3;
+                stage = 2;
             }
 
-            // stage 3a
-            else if (stage == 3 && currentResetCatapultTime < (resetCatapultStartTime + 250) ) {
+            // stage 2a
+            else if (stage == 2 && currentResetCatapultTime < (resetCatapultStartTime + 250) ) {
                 currentResetCatapultTime = System.currentTimeMillis();
             }
-            // stage 3b
-            else if (stage == 3 && (currentResetCatapultTime >= (resetCatapultStartTime + 250)) && (EncoderRead.getEncDistance() > angleback )) {
+            // stage 2b
+            else if ((currentResetCatapultTime >= (resetCatapultStartTime + 250)) && (EncoderRead.getEncDistance() > angleback )) {
                 Variables.CatapultMotor1.set(-.25);
                 Variables.CatapultMotor2.set(.25);
             }
-            // stage 3c
+            // stage 2c
             else {
                 Variables.CatapultMotor1.set(0.00);
                 Variables.CatapultMotor2.set(0.00);
